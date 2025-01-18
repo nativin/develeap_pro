@@ -1,2 +1,0 @@
-curl "http://localhost:5000/weight?from=20250101000000&to=20250117235959&filter=in"
-
