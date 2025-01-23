@@ -2,18 +2,21 @@ module.exports = {
     cache: true,
     entry: './static/src/app.js',
     output: {
-        filename: './static/build/main.js'
+        path: __dirname + '/static/build',
+        filename: 'main.js'
     },
     devtool: 'source-map',
     module: {
-        loaders: [
-        {
-            test: /\.js$/,
-            loader: 'babel-loader',
-            query: {
-                presets: ['es2015', 'react']
+        rules: [
+            {
+                test: /\.js$/,
+                use: {
+                    loader: 'babel-loader',
+                    options: {
+                        presets: ['@babel/preset-env', '@babel/preset-react']
+                    }
+                }
             }
-        },
         ]
     }
 };
