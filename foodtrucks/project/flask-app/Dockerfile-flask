@@ -1,0 +1,17 @@
+# Start from Python 2.7 base image with Alpine 3.11
+FROM python:2.7-alpine3.11
+
+# Copy application files to /app in container
+COPY . /app
+
+# Set working directory to /app
+WORKDIR /app
+
+# Install Python dependencies
+RUN pip install -r requirements.txt
+
+# Expose port 5000 for Flask
+EXPOSE 5000
+
+# Run Flask app
+CMD python2 app.py
