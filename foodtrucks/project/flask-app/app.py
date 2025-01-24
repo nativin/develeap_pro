@@ -4,9 +4,8 @@ import time
 from flask import Flask, jsonify, request, render_template
 import sys
 import requests
-es = Elasticsearch([{'host': 'elasticsearch-server', 'port': 9200}])
-ES_HOST = 'elasticsearch-server'
 
+es = Elasticsearch(hosts=['elasticsearch:9200'])
 
 app = Flask(__name__)
 

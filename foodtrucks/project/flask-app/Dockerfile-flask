@@ -1,17 +1,21 @@
-# Start from Python 2.7 base image with Alpine 3.11
-FROM python:2.7-alpine3.11
+FROM alpine:3.11 as builder
 
-# Copy application files to /app in container
-COPY . /app
-
-# Set working directory to /app
+RUN apk add --no-cache python2 py2-pip nodejs npm
 WORKDIR /app
-
-# Install Python dependencies
+COPY . .
+RUN npm install && npm run build
 RUN pip install -r requirements.txt
 
-# Expose port 5000 for Flask
-EXPOSE 5000
+# שינוי הנתיבים - הקבצים צריכים להיות בתוך תיקיית flask-app
+COPY utils/generate_geojson.py /app/
+COPY utils/trucks.geojson /app/
+RUN python generate_geojson.py
 
-# Run Flask app
-CMD python2 app.py
+FROM alpine:3.11
+RUN apk add --no-cache python2
+COPY --from=builder /usr/lib/python2.7/site-packages /usr/lib/python2.7/site-packages
+COPY --from=builder /app/app.py /app/
+COPY --from=builder /app/templates /app/templates
+WORKDIR /app
+EXPOSE 5000
+ENTRYPOINT ["python", "./app.py"]

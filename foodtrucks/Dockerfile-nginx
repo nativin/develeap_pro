@@ -1,11 +1,4 @@
-# Use Nginx as the base image
 FROM nginx:alpine
-
-# Copy Nginx configuration file
-COPY nginx.conf /etc/nginx/nginx.conf
-
-# Copy the React build static files (including main.js and main.js.map)
-COPY ./project/flask-app/static/build /usr/share/nginx/html
-
-# Expose port 80 for Nginx
-EXPOSE 80
+COPY nginx/nginx.conf /etc/nginx/nginx.conf
+COPY nginx/static /usr/share/nginx/html/static
+COPY nginx/index.html /usr/share/nginx/html/
