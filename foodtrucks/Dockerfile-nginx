@@ -1,0 +1,4 @@
+FROM nginx:alpine
+COPY nginx/nginx.conf /etc/nginx/nginx.conf
+COPY nginx/static /usr/share/nginx/html/static
+COPY nginx/index.html /usr/share/nginx/html/

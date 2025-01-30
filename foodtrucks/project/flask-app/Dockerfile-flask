@@ -1,0 +1,21 @@
+FROM alpine:3.11 as builder
+
+RUN apk add --no-cache python2 py2-pip nodejs npm
+WORKDIR /app
+COPY . .
+RUN npm install && npm run build
+RUN pip install -r requirements.txt
+
+# שינוי הנתיבים - הקבצים צריכים להיות בתוך תיקיית flask-app
+COPY utils/generate_geojson.py /app/
+COPY utils/trucks.geojson /app/
+RUN python generate_geojson.py
+
+FROM alpine:3.11
+RUN apk add --no-cache python2
+COPY --from=builder /usr/lib/python2.7/site-packages /usr/lib/python2.7/site-packages
+COPY --from=builder /app/app.py /app/
+COPY --from=builder /app/templates /app/templates
+WORKDIR /app
+EXPOSE 5000
+ENTRYPOINT ["python", "./app.py"]

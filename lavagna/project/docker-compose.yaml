@@ -1,0 +1,6 @@
+version: '3'
+services:
+  lavagna:
+    image: 324037305534.dkr.ecr.ap-south-1.amazonaws.com/nativinakur-repo:1.0
+    ports:
+      - "8080:8080"
